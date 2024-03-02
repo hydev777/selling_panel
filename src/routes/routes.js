@@ -1,12 +1,16 @@
 import express from "express";
 const router = express.Router();
 
-import { login, authenticateRequest } from "../controller/authentication.js";
+import {
+  login,
+  authenticateRequest,
+  authenticateToken,
+} from "../controller/authentication.js";
 import {
   postCreateUser,
   postEditUser,
   getUsers,
-  getUser,
+  getUserDetails,
 } from "../controller/users.js";
 
 // Test
@@ -19,11 +23,13 @@ router.get("/test", (req, res) => {
 
 router.post("/login", login);
 
+router.get("/authenticate-token", authenticateToken);
+
 // User
 
 router.get("/users", authenticateRequest, getUsers);
 
-router.get("/users/:id", authenticateRequest, getUser);
+router.get("/users/:id", authenticateRequest, getUserDetails);
 
 router.post("/users/create", authenticateRequest, postCreateUser);
 

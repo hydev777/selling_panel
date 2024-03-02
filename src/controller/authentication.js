@@ -47,6 +47,26 @@ export const authenticateRequest = (req, res, next) => {
   });
 };
 
+export const authenticateToken = (req, res, next) => {
+  let token = req.headers.authorization;
+  let privateKey = fs.readFileSync(
+    path.resolve(__dirname + "/selling_panel", "../privateKey.key"),
+    "utf8"
+  );
+
+  if (!token) {
+    return res.status(401).json({ message: "No Autorizado" });
+  }
+
+  jwt.verify(token, privateKey, (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ message: "Token invalido" });
+    }
+
+    return res.status(200).json({ message: "Token valido" });
+  });
+};
+
 function generateToken(user) {
   let privateKey = fs.readFileSync(
     path.resolve(__dirname + "/selling_panel", "../privateKey.key"),

@@ -1,7 +1,7 @@
 import {
   createUser,
   editUser,
-  user,
+  userDetails,
   allUsers,
   userAlreadyExists,
 } from "../services/users.js";
@@ -44,11 +44,19 @@ export const getUsers = async (req, res) => {
   }
 };
 
-export const getUser = async (req, res) => {
+export const getUserDetails = async (req, res) => {
   let userId = req.params.id;
 
   try {
-    let result = await user(userId);
+    let result = await userDetails(userId);
+
+    res.status(200).send({
+      id: result.id,
+      name: result.name,
+      username: result.username,
+      role: result.role,
+      price_category: result.price_category,
+    });
   } catch ({ name, message }) {
     res.status(500).send({ message: message });
   }

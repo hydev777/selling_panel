@@ -57,4 +57,13 @@ export const allUsers = async () => {
   });
 };
 
-export const user = async (user) => {};
+export const userDetails = async (userId) => {
+  let database = await sql.connect(sqlConfig);
+
+  let result = await database
+    .request()
+    .input("id", sql.Int, userId)
+    .execute("userDetails");
+
+  return result.recordset[0];
+};
