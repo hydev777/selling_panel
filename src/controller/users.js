@@ -4,6 +4,7 @@ import {
   userDetails,
   allUsers,
   userAlreadyExists,
+  userFormData,
 } from "../services/users.js";
 
 export const postCreateUser = async (req, res) => {
@@ -44,19 +45,23 @@ export const getUsers = async (req, res) => {
   }
 };
 
+export const getUserFormData = async (req, res) => {
+  try {
+    let data = await userFormData();
+
+    res.status(200).send(data);
+  } catch ({ name, message }) {
+    res.status(500).send({ message: message });
+  }
+};
+
 export const getUserDetails = async (req, res) => {
   let userId = req.params.id;
 
   try {
     let result = await userDetails(userId);
 
-    res.status(200).send({
-      id: result.id,
-      name: result.name,
-      username: result.username,
-      role: result.role,
-      price_category: result.price_category,
-    });
+    res.status(200).send(result);
   } catch ({ name, message }) {
     res.status(500).send({ message: message });
   }

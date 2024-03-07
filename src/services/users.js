@@ -39,6 +39,7 @@ export const editUser = async (user) => {
     .input("username", sql.VarChar(50), user.username)
     .input("name", sql.VarChar(50), user.name)
     .input("role", sql.Int, user.role)
+    .input("priceCategory", sql.Int, user.priceCategory)
     .execute("editUser");
 };
 
@@ -50,11 +51,41 @@ export const allUsers = async () => {
   return result.recordset.map((user) => {
     return {
       id: user.id,
-      name: user.namez,
+      name: user.name,
       username: user.username,
-      role: user.rolez,
+      role: user.role,
+      priceCategory: user.price_category,
     };
   });
+};
+
+export const userFormData = async () => {
+  let database = await sql.connect(sqlConfig);
+
+  let roles = await database.request().execute("allRoles");
+  let priceCategories = await database.request().execute("allPriceCategories");
+  let packageTypes = await database.request().execute("allPackageTypes");
+
+  return {
+    roles: roles.recordset.map((role) => {
+      return {
+        id: role.id,
+        name: role.name,
+      };
+    }),
+    priceCategories: priceCategories.recordset.map((category) => {
+      return {
+        id: category.id,
+        name: category.name,
+      };
+    }),
+    packageTypes: packageTypes.recordset.map((packageType) => {
+      return {
+        id: packageType.id,
+        name: packageType.name,
+      };
+    }),
+  };
 };
 
 export const userDetails = async (userId) => {
@@ -65,5 +96,11 @@ export const userDetails = async (userId) => {
     .input("id", sql.Int, userId)
     .execute("userDetails");
 
-  return result.recordset[0];
+  return {
+    id: result.recordset[0]["id"],
+    name: result.recordset[0]["name"],
+    username: result.recordset[0]["username"],
+    role: result.recordset[0]["role"],
+    priceCategory: result.recordset[0]["price_category"],
+  };
 };
