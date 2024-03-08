@@ -3,17 +3,22 @@ import {
   editPackage,
   packageDetails,
   allPackages,
-  packageAlreadyExists,
+  packageNameAlreadyExists,
+  packageCodeAlreadyExists,
 } from "../services/packages.js";
 
 export const postCreatePackage = async (req, res) => {
   let packagez = req.body;
 
   try {
-    if (await packageAlreadyExists(packagez.name)) {
+    if (await packageNameAlreadyExists(packagez.name)) {
       res
         .status(422)
         .send({ message: "Este nombre de packaquete ya esta en uso" });
+    } else if (await packageCodeAlreadyExists(packagez.code)) {
+      res
+        .status(422)
+        .send({ message: "Este codigo de packaquete ya esta en uso" });
     } else {
       await createPackage(packagez);
 
@@ -28,9 +33,19 @@ export const postEditPackage = async (req, res) => {
   let packagez = req.body;
 
   try {
-    await editPackage(packagez);
+    if (await packageNameAlreadyExists(packagez.name)) {
+      res
+        .status(422)
+        .send({ message: "Este nombre de packaquete ya esta en uso" });
+    } else if (await packageCodeAlreadyExists(packagez.code)) {
+      res
+        .status(422)
+        .send({ message: "Este codigo de packaquete ya esta en uso" });
+    } else {
+      await editPackage(packagez);
 
-    res.status(200).send({ message: "El paquete ha sido editado" });
+      res.status(200).send({ message: "El paquete ha sido editado" });
+    }
   } catch ({ name, message }) {
     res.status(500).send({ message: message });
   }
@@ -46,4 +61,14 @@ export const getPackages = async (req, res) => {
   }
 };
 
-export const getpackage = async (req, res) => {};
+export const getPackage = async (req, res) => {
+  let id = req.params.id;
+
+  try {
+    let packagez = await packageDetails(id);
+
+    res.status(200).send(packagez);
+  } catch ({ name, message }) {
+    res.status(500).send({ message: message });
+  }
+};

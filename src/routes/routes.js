@@ -15,7 +15,18 @@ import {
   getUserFormData,
 } from "../controller/users.js";
 
-import { getPackages } from "../controller/packages.js";
+import {
+  getPackages,
+  postEditPackage,
+  postCreatePackage,
+  getPackage,
+} from "../controller/packages.js";
+
+import {
+  postCreateCategoryPrice,
+  postEditCategoryPrice,
+  getCategoryPricesByType,
+} from "../controller/category_prices.js";
 
 // Test
 
@@ -45,19 +56,33 @@ router.get("/form-data", authenticateRequest, getUserFormData);
 
 router.get("/packages", authenticateRequest, getPackages);
 
-router.get("/packages/:id", authenticateRequest, () => {});
+router.get("/packages/:id", authenticateRequest, getPackage);
 
-router.post("/packages/create", authenticateRequest, () => {});
+router.post("/packages/create", authenticateRequest, postCreatePackage);
 
-router.post("/packages/:id/edit", authenticateRequest, () => {});
+router.post("/packages/edit", authenticateRequest, postEditPackage);
 
 // Packages prices
 
 router.get("/packages-prices/:id", authenticateRequest, () => {});
 
-router.post("/packages-prices/create", authenticateRequest, () => {});
+router.get(
+  "/packages-prices/:typeId/type",
+  authenticateRequest,
+  getCategoryPricesByType
+);
 
-router.post("/packages-prices/:id/edit", authenticateRequest, () => {});
+router.post(
+  "/packages-prices/create",
+  authenticateRequest,
+  postCreateCategoryPrice
+);
+
+router.post(
+  "/packages-prices/:id/edit",
+  authenticateRequest,
+  postEditCategoryPrice
+);
 
 // Bills
 

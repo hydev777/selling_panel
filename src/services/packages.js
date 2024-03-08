@@ -7,13 +7,12 @@ export const createPackage = async (packagez) => {
 
   await database
     .request()
-    .input("name", sql.VarChar(50), packagez.name)
-    .input("residentialPrice", sql.Decimal(18, 0), packagez.password)
-    .input("commercialPrice", sql.Decimal(18, 0), packagez.name)
+    .input("name", sql.VarChar(100), packagez.name)
+    .input("code", sql.VarChar(50), packagez.code)
     .execute("createPackage");
 };
 
-export async function packageAlreadyExists(name) {
+export async function packageNameAlreadyExists(name) {
   let database = await sql.connect(sqlConfig);
 
   let result = await database
@@ -29,6 +28,22 @@ export async function packageAlreadyExists(name) {
   }
 }
 
+export async function packageCodeAlreadyExists(code) {
+  let database = await sql.connect(sqlConfig);
+
+  let result = await database
+    .request()
+    .input("code", sql.VarChar(50), code)
+    .output("result", sql.Int)
+    .execute("packageCodeAlreadyExists");
+
+  if (result["output"]["result"] == 1) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 export const editPackage = async (packagez) => {
   let database = await sql.connect(sqlConfig);
 
@@ -36,8 +51,7 @@ export const editPackage = async (packagez) => {
     .request()
     .input("id", sql.Int, packagez.id)
     .input("name", sql.VarChar(50), packagez.name)
-    .input("residentialPrice", sql.Decimal(18, 0), packagez.password)
-    .input("commercialPrice", sql.Decimal(18, 0), packagez.name)
+    .input("code", sql.VarChar(50), packagez.code)
     .execute("editPackage");
 };
 
@@ -50,10 +64,22 @@ export const allPackages = async () => {
     return {
       id: packagez.id,
       name: packagez.namez,
-      residentialPrice: packagez.residential_price,
-      commercialPrice: packagez.commercial_price,
+      code: packagez.code,
     };
   });
 };
 
-export const packageDetails = async (user) => {};
+export const packageDetails = async (id) => {
+  let database = await sql.connect(sqlConfig);
+
+  let packagez = await database
+    .request()
+    .input("id", sql.Int, id)
+    .execute("getPackage");
+
+  return {
+    id: packagez.recordset[0]["id"],
+    name: packagez.recordset[0]["namez"],
+    code: packagez.recordset[0]["code"],
+  };
+};
