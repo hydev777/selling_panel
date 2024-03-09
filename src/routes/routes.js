@@ -28,12 +28,6 @@ import {
   getCategoryPricesByType,
 } from "../controller/category_prices.js";
 
-// Test
-
-router.get("/test", (req, res) => {
-  res.json({ nombre: "Samus campero" });
-});
-
 // Authentication
 
 router.post("/login", login);
@@ -49,6 +43,8 @@ router.get("/users/:id", authenticateRequest, getUserDetails);
 router.post("/users/create", authenticateRequest, postCreateUser);
 
 router.post("/users/edit", authenticateRequest, postEditUser);
+
+router.get("/current-users", authenticateRequest, () => {});
 
 router.get("/form-data", authenticateRequest, getUserFormData);
 
@@ -79,7 +75,7 @@ router.post(
 );
 
 router.post(
-  "/packages-prices/:id/edit",
+  "/packages-prices/edit",
   authenticateRequest,
   postEditCategoryPrice
 );

@@ -11,6 +11,7 @@ export const createUser = async (user) => {
     .input("password", sql.VarChar(100), user.password)
     .input("name", sql.VarChar(50), user.name)
     .input("role", sql.Int, user.role)
+    .input("priceCategory", sql.Int, user.priceCategory)
     .execute("createUser");
 };
 

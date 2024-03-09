@@ -56,9 +56,10 @@ export const editCategoryPrices = async (catPrice) => {
 
   await database
     .request()
-    .input("priceCategory", sql.Int, catPrice.priceCategory)
-    .input("package", sql.Int, catPrice.package)
-    .input("packageType", sql.Int, catPrice.packageType)
+    .input("packageCategoryPriceId", sql.Int, catPrice.packageCategoryPriceId)
+    .input("packageId", sql.Int, catPrice.packageId)
+    .input("priceCategoryId", sql.Int, catPrice.priceCategoryId)
+    .input("packageTypeId", sql.Int, catPrice.packageTypeId)
     .input(
       "techResidentialPrice",
       sql.Decimal(18, 0),

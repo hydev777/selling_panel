@@ -26,6 +26,8 @@ export const postEditCategoryPrice = async (req, res) => {
 
   try {
     await editCategoryPrices(categoryPrices);
+
+    res.status(200).send({ message: "Category price edited" });
   } catch ({ name, message }) {
     res.status(500).send({ message: message });
   }
