@@ -82,6 +82,6 @@ router.post(
 
 // Bills
 
-router.post("/bills/create", authenticateRequest, () => {});
+router.post("/bills/create", authenticateRequest, () => {}); // status factura - completado, cancelado o pendiente
 
 export { router };

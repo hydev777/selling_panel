@@ -41,6 +41,7 @@ export const editUser = async (user) => {
     .input("name", sql.VarChar(50), user.name)
     .input("role", sql.Int, user.role)
     .input("priceCategory", sql.Int, user.priceCategory)
+    .input("status", sql.VarChar(50), user.status)
     .execute("editUser");
 };
 
@@ -86,6 +87,16 @@ export const userFormData = async () => {
         name: packageType.name,
       };
     }),
+    status: [
+      {
+        id: 1,
+        name: "active",
+      },
+      {
+        id: 2,
+        name: "inactive",
+      },
+    ],
   };
 };
 
@@ -103,5 +114,6 @@ export const userDetails = async (userId) => {
     username: result.recordset[0]["username"],
     role: result.recordset[0]["role"],
     priceCategory: result.recordset[0]["price_category"],
+    status: result.recordset[0]["status"],
   };
 };

@@ -83,12 +83,13 @@ export const editCategoryPrices = async (catPrice) => {
     .execute("editPackageCategoryPrice");
 };
 
-export const categoryPricesByType = async (typeId) => {
+export const categoryPricesByType = async (typeId, user) => {
   let database = await sql.connect(sqlConfig);
 
   let categoryPricesByType = await database
     .request()
     .input("priceCategoryId", sql.Int, typeId)
+    .input("role", sql.VarChar(50), user.role)
     .execute("getTechnicianProductsByType");
 
   return categoryPricesByType.recordset.map((price) => {

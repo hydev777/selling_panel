@@ -4,6 +4,7 @@ import {
   editCategoryPrices,
   packageCategoryPricesAlreadyExists,
 } from "../services/category_prices.js";
+import { userInToken } from "./authentication.js";
 
 export const postCreateCategoryPrice = async (req, res) => {
   let categoryPrices = req.body;
@@ -35,9 +36,11 @@ export const postEditCategoryPrice = async (req, res) => {
 
 export const getCategoryPricesByType = async (req, res) => {
   let typeId = req.params.typeId;
+  let token = req.headers.authorization;
+  let user = await userInToken(token);
 
   try {
-    let packagePrices = await categoryPricesByType(typeId);
+    let packagePrices = await categoryPricesByType(typeId, user);
 
     res.status(200).send(packagePrices);
   } catch ({ name, message }) {
