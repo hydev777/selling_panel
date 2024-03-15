@@ -3,7 +3,7 @@ import cors from "cors";
 import process from "process";
 import dotenv from "dotenv";
 
-import { router } from "./routes/routes.js";
+import router from "./routes/routes.js";
 
 dotenv.config();
 
