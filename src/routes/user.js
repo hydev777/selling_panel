@@ -14,14 +14,14 @@ const userRouter = express.Router();
 
 // User
 
-userRouter.get("/index", authenticateRequest, getUsers);
+userRouter.get("/form-data", authenticateRequest, getUserFormData);
 
-userRouter.get("/:id", authenticateRequest, getUserDetails);
+userRouter.get("/index", authenticateRequest, getUsers);
 
 userRouter.post("/create", authenticateRequest, postCreateUser);
 
 userRouter.post("/edit", authenticateRequest, postEditUser);
 
-userRouter.get("/form-data", authenticateRequest, getUserFormData);
+userRouter.get("/:id", authenticateRequest, getUserDetails);
 
 export default userRouter;

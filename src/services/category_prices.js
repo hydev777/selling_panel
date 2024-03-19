@@ -90,7 +90,7 @@ export const categoryPricesByType = async (typeId, user) => {
     .request()
     .input("priceCategoryId", sql.Int, typeId)
     .input("role", sql.VarChar(50), user.role)
-    .execute("getTechnicianProductsByType");
+    .execute("getPackagesProductsByType");
 
   return categoryPricesByType.recordset.map((price) => {
     return {
@@ -105,4 +105,28 @@ export const categoryPricesByType = async (typeId, user) => {
       admCommercialPrice: price.adm_commercial_price,
     };
   });
+};
+
+export const categoryPriceByTypeDetail = async (id, user) => {
+  let database = await sql.connect(sqlConfig);
+
+  let categoryPricesByTypeDetails = await database
+    .request()
+    .input("id", sql.Int, id)
+    .input("role", sql.VarChar(50), user.role)
+    .execute("getPackageCategoryPriceDetails");
+
+  let categoryPricesByDetails = categoryPricesByTypeDetails.recordset[0];
+
+  return {
+    id: categoryPricesByDetails.id,
+    priceCategory: categoryPricesByDetails.price_category,
+    packageType: categoryPricesByDetails.package_type,
+    packageName: categoryPricesByDetails.package_name,
+    packageCode: categoryPricesByDetails.package_code,
+    techResidentialPrice: categoryPricesByDetails.tech_residential_price,
+    techCommercialPrice: categoryPricesByDetails.tech_commercial_price,
+    admResidentialPrice: categoryPricesByDetails.adm_residential_price,
+    admCommercialPrice: categoryPricesByDetails.adm_commercial_price,
+  };
 };

@@ -3,6 +3,7 @@ import {
   categoryPricesByType,
   editCategoryPrices,
   packageCategoryPricesAlreadyExists,
+  categoryPriceByTypeDetail,
 } from "../services/category_prices.js";
 import { userInToken } from "./authentication.js";
 
@@ -41,6 +42,20 @@ export const getCategoryPricesByType = async (req, res) => {
 
   try {
     let packagePrices = await categoryPricesByType(typeId, user);
+
+    res.status(200).send(packagePrices);
+  } catch ({ name, message }) {
+    res.status(500).send({ message: message });
+  }
+};
+
+export const getCategoryPriceByTypeDetails = async (req, res) => {
+  let id = req.params.id;
+  let token = req.headers.authorization;
+  let user = await userInToken(token);
+
+  try {
+    let packagePrices = await categoryPriceByTypeDetail(id, user);
 
     res.status(200).send(packagePrices);
   } catch ({ name, message }) {

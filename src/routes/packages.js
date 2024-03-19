@@ -15,10 +15,10 @@ const packagesRouter = express.Router();
 
 packagesRouter.get("/index", authenticateRequest, getPackages);
 
-packagesRouter.get("/:id", authenticateRequest, getPackage);
-
 packagesRouter.post("/create", authenticateRequest, postCreatePackage);
 
 packagesRouter.post("/edit", authenticateRequest, postEditPackage);
+
+packagesRouter.get("/:id", authenticateRequest, getPackage);
 
 export default packagesRouter;
